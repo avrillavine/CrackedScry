@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class SimpleAnimState : MonoBehaviour {
 	public Animator anim;
-
+	//Magnifying Glass
+	public GameObject mg;
 	public enum ACTION
 	{
 		Idle,
 		Walk,
 		Backup,
-		Strafe
+		Strafe,
+		Look
 		//Jump
 	}
 	public ACTION currentAction = ACTION.Idle;
@@ -47,6 +49,10 @@ public class SimpleAnimState : MonoBehaviour {
 				anim.SetBool("IsWalking", false);
 				anim.SetBool("IsIdle", false);
 				break;
+			case ACTION.Look:
+				anim.SetTrigger("Look");
+				anim.ResetTrigger("Look");
+				break;
 			////case ACTION.Jump:
 			////	anim.SetTrigger("Jump");
 			////	anim.ResetTrigger("Jump");
@@ -72,13 +78,18 @@ public class SimpleAnimState : MonoBehaviour {
 		{
 			SwitchTransition(ACTION.Strafe);
 		}
+		if(Input.GetKeyDown(KeyCode.G))
+		{
+			anim.SetTrigger("Look");
+			Debug.DrawRay(mg.transform.position, mg.transform.forward * 25.0f,Color.red,20.0f,true);
+		}
 		//if(Input.GetKeyDown(KeyCode.Space))
 		//{
 		//	anim.SetTrigger("Jump");
 		//	//SwitchTransition(ACTION.Jump);
 		//}
 
-		if(Input.GetKeyUp(KeyCode.W)||Input.GetKeyUp(KeyCode.A)||Input.GetKeyUp(KeyCode.S)||Input.GetKeyUp(KeyCode.D)||Input.GetKeyUp(KeyCode.Space))
+		if(Input.GetKeyUp(KeyCode.W)||Input.GetKeyUp(KeyCode.A)||Input.GetKeyUp(KeyCode.S)||Input.GetKeyUp(KeyCode.D)||Input.GetKeyUp(KeyCode.Space)||Input.GetKeyUp(KeyCode.G))
 		{
 			SwitchTransition(ACTION.Idle);
 			//anim.ResetTrigger("Jump");
